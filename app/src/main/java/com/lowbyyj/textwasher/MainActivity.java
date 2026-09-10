@@ -145,8 +145,8 @@ public final class MainActivity extends Activity {
                 | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
         editor.setImeOptions(EditorInfo.IME_FLAG_NO_EXTRACT_UI | EditorInfo.IME_FLAG_NO_PERSONALIZED_LEARNING);
         editor.setGravity(Gravity.TOP | Gravity.START);
-        editor.setTextSize(17);
-        editor.setTypeface(Typeface.MONOSPACE);
+        editor.setTextSize(19);
+        editor.setTypeface(Typeface.SANS_SERIF);
         editor.setTextColor(getColor(R.color.ink));
         editor.setBackground(null);
         editor.setPadding(dp(16), dp(14), dp(16), dp(20));

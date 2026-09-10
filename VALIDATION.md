@@ -1,5 +1,12 @@
 # Validation
 
+## 1.0.3 Editor typography
+
+- Replaced the editor's monospace typeface with the system sans-serif typeface so ordinary Korean and English word spaces use proportional font metrics. Text content and intentional repeated spaces are preserved.
+- Increased editor text from 17 to 19 sp.
+- Visually checked Korean, English, and single/double spaces on API 35, including the optimized, development-signed 1.0.3 APK after an update installation.
+- All eight existing Korean IME regression tests passed. Lint: zero errors, three dependency-version advisories.
+
 ## 1.0.2 Korean composition correction
 
 - Reproduced the original bug through the native IME protocol: `setComposingText("ㅋ")` followed by `setComposingText("키")` produced `ㅋ키` instead of `키`.
