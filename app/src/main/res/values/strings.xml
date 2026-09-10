@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">Text Washer</string>
+    <string name="untitled">Untitled</string>
+    <string name="open">Open</string>
+    <string name="save">Save</string>
+    <string name="more">Options</string>
+    <string name="auto_copy">Clipboard auto-copy</string>
+    <string name="editor">Plain text</string>
+    <string name="saved">Saved</string>
+    <string name="saved_downloads">Saved to Downloads/Text Washer</string>
+    <string name="save_failed">Couldn’t save. Your text is still here.</string>
+    <string name="open_failed">Couldn’t open this file.</string>
+    <string name="txt_only">.txt files only.</string>
+    <string name="unsupported_encoding">Use a UTF-8 or UTF-16 .txt file.</string>
+    <string name="too_large">This file is too large. The limit is 4 MB.</string>
+    <string name="recovery_failed">Couldn’t keep recovery text. Please save your file.</string>
+    <string name="recovery_read_failed">Couldn’t read recovery text.</string>
+    <string name="unsaved">Save changes before opening another file?</string>
+    <string name="discard">Discard</string>
+    <string name="cancel">Cancel</string>
+    <string name="clipboard_failed">Pasted. Couldn’t update the clipboard.</string>
+</resources>
