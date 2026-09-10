@@ -1,5 +1,15 @@
 # Validation
 
+## 1.0.2 Korean composition correction
+
+- Reproduced the original bug through the native IME protocol: `setComposingText("ㅋ")` followed by `setComposingText("키")` produced `ㅋ키` instead of `키`.
+- Removed the editor-wide span-stripping filter. It removed the composing span needed to replace the previous syllable, contrary to Android's [InputFilter span contract](https://developer.android.com/reference/android/text/InputFilter).
+- Removed clipboard matching from `commitText`. Normal keyboard commits now preserve Android's composing range and cursor behavior, including when the text happens to match the clipboard. Explicit paste still goes through the washer.
+- 20 Android instrumentation tests and 16 JVM tests passed. Eight new IME regressions cover Hangul updates, a complete Korean sentence, composing-region replacement, deletion, composing spans, clipboard-match commits, paste between composed words, and recovery debounce during composition.
+- The same eight IME tests also passed against the optimized, development-signed **1.0.2 APK** delivered here. Lint: zero errors, three dependency-version advisories.
+- A passive input method exists only in the test APK so an unrelated keyboard cannot cancel synthetic composition during tests. It is absent from the application APK.
+- These tests exercise Android's real editor and input connection on API 35. A physical Bluetooth keyboard and the user's manufacturer IME were not available for hardware validation.
+
 ## 1.0.1 UI correction
 
 - Open and Save use content-sized, single-line buttons, with a 64 dp minimum width.
@@ -40,7 +50,7 @@
 - Files: UTF-8, UTF-8 with BOM, or UTF-16 with BOM. Encoding and existing line endings are retained. Opening is capped at 4 MiB. Legacy encodings and binary content are rejected.
 - Android's file picker filters by MIME type rather than extension. The app independently checks the actual display name and rejects anything other than `.txt`.
 - CommonMark plus strikethrough is supported. Extended dialects such as tables or custom Markdown directives may retain syntax. HTML conversion uses Android's native parser; images and complex document layouts are not retained.
-- Android does not label every keyboard insertion as a paste. Standard paste paths are washed; an IME clipboard chip is recognized when its committed text matches the current clipboard. A keyboard that inserts an older private clipboard-history item as ordinary typing can bypass washing. Exact clipboard matches can also be treated as paste when committed by a keyboard suggestion.
+- Android does not label every keyboard insertion as a paste. Standard paste paths are washed. Keyboard clipboard-history chips that send ordinary `commitText` are treated as typing; use Ctrl+V or the editor's Paste action for guaranteed washing. Clipboard contents are never used to guess whether normal typing is a paste.
 - Android 12+ supplies its own system launch window. The app has no additional splash activity or startup screen.
 - Recovery is one internal state, written after 700 ms idle and immediately on pause. A process killed before either write can lose the last in-flight edit. External files are written only on explicit Save.
 - The supplied `artifacts/Text-Washer.apk` is optimized and signed with the local Android development key for installation/testing. The normal release Gradle output remains unsigned; no publishing key is included.

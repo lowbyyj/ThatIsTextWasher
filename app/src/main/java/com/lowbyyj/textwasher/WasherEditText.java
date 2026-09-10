@@ -4,14 +4,8 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.os.Build;
-import android.text.InputFilter;
-import android.text.Spanned;
-import android.view.ContentInfo;
 import android.view.DragEvent;
 import android.view.KeyEvent;
-import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputConnection;
-import android.view.inputmethod.InputConnectionWrapper;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -21,8 +15,8 @@ final class WasherEditText extends EditText {
 
     WasherEditText(Context context) {
         super(context);
-        setFilters(new InputFilter[]{(source, start, end, dest, dstart, dend) ->
-                source instanceof Spanned ? source.subSequence(start, end).toString() : null});
+        // Keep the native input connection and its composing spans intact. Span removal
+        // belongs to the explicit paste path; doing it to IME updates duplicates syllables.
         if (Build.VERSION.SDK_INT >= 31) {
             setOnReceiveContentListener(new String[]{"text/*"}, (view, payload) -> {
                 paste(payload.getClip());
@@ -48,27 +42,6 @@ final class WasherEditText extends EditText {
             return onTextContextMenuItem(android.R.id.paste);
         }
         return super.onKeyShortcut(keyCode, event);
-    }
-
-    @Override public InputConnection onCreateInputConnection(EditorInfo outAttrs) {
-        InputConnection base = super.onCreateInputConnection(outAttrs);
-        if (base == null) return null;
-        return new InputConnectionWrapper(base, false) {
-            @Override public boolean commitText(CharSequence text, int newCursorPosition) {
-                // Some keyboards insert a clipboard chip via commitText instead of Paste.
-                // Only recognize an exact clipboard match; ordinary typing is never washed.
-                ClipboardManager clipboard = getContext().getSystemService(ClipboardManager.class);
-                if (text != null && (text.length() > 1 || text instanceof Spanned) && clipboard.hasPrimaryClip()) {
-                    ClipData clip = clipboard.getPrimaryClip();
-                    if (clip != null && clip.getItemCount() == 1 && clip.getItemAt(0).getText() != null
-                            && text.toString().contentEquals(clip.getItemAt(0).getText())) {
-                        paste(clip);
-                        return true;
-                    }
-                }
-                return super.commitText(text == null ? "" : text.toString(), newCursorPosition);
-            }
-        };
     }
 
     @Override public boolean onDragEvent(DragEvent event) {

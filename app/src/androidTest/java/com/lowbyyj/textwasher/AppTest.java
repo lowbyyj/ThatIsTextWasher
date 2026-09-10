@@ -12,8 +12,6 @@ import android.text.SpannableString;
 import android.text.style.StyleSpan;
 import android.view.ContentInfo;
 import android.view.KeyEvent;
-import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputConnection;
 
 import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicReference;
@@ -28,6 +26,7 @@ public class AppTest extends ActivityInstrumentationTestCase2<MainActivity> {
 
     @Override protected void setUp() throws Exception {
         super.setUp();
+        ImeTestEnvironment.activate(getInstrumentation());
         setActivityInitialTouchMode(false);
         activity = getActivity();
         editor = activity.findViewById(android.R.id.edit);
@@ -140,20 +139,12 @@ public class AppTest extends ActivityInstrumentationTestCase2<MainActivity> {
         assertEquals("**keep clipboard**", clip());
     }
 
-    public void testReceiveContentAndKeyboardClipboardChip() {
+    public void testReceiveContentPasteIsWashed() {
         if (Build.VERSION.SDK_INT >= 31) {
             ui(() -> editor.performReceiveContent(new ContentInfo.Builder(
                     ClipData.newPlainText("external", "**received**"), ContentInfo.SOURCE_CLIPBOARD).build()));
             assertEquals("received", text());
         }
-        ui(() -> {
-            editor.setText("");
-            clipboard.setPrimaryClip(ClipData.newPlainText("external", "**chip**"));
-            InputConnection connection = editor.onCreateInputConnection(new EditorInfo());
-            connection.commitText("**chip**", 1);
-        });
-        assertEquals("chip", text());
-        assertEquals("chip", clip());
     }
 
     public void testTimestampSaveAndShorterOverwrite() throws Exception {

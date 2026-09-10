@@ -3,5 +3,13 @@
         <uses-library android:name="android.test.runner" />
         <provider android:name="com.lowbyyj.textwasher.FixtureProvider"
             android:authorities="com.lowbyyj.textwasher.test.files" android:exported="true" />
+        <service android:name="com.lowbyyj.textwasher.PassiveTestIme"
+            android:process=":ime" android:exported="true"
+            android:permission="android.permission.BIND_INPUT_METHOD">
+            <intent-filter>
+                <action android:name="android.view.InputMethod" />
+            </intent-filter>
+            <meta-data android:name="android.view.im" android:resource="@xml/test_ime" />
+        </service>
     </application>
 </manifest>
