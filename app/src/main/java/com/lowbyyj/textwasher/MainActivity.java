@@ -106,7 +106,7 @@ public final class MainActivity extends Activity {
         bar.setPadding(dp(16), 0, 0, 0);
         filename = new TextView(this);
         filename.setTextColor(getColor(R.color.ink));
-        filename.setTextSize(14);
+        filename.setTextSize(15);
         filename.setSingleLine();
         filename.setEllipsize(TextUtils.TruncateAt.MIDDLE);
         bar.addView(filename, new LinearLayout.LayoutParams(0, dp(52), 1));
@@ -145,7 +145,7 @@ public final class MainActivity extends Activity {
                 | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
         editor.setImeOptions(EditorInfo.IME_FLAG_NO_EXTRACT_UI | EditorInfo.IME_FLAG_NO_PERSONALIZED_LEARNING);
         editor.setGravity(Gravity.TOP | Gravity.START);
-        editor.setTextSize(16);
+        editor.setTextSize(17);
         editor.setTypeface(Typeface.MONOSPACE);
         editor.setTextColor(getColor(R.color.ink));
         editor.setBackground(null);
@@ -160,12 +160,13 @@ public final class MainActivity extends Activity {
         Button button = new Button(this, null, android.R.attr.borderlessButtonStyle);
         button.setText(text);
         button.setAllCaps(false);
-        button.setTextSize(14);
+        button.setSingleLine(true);
+        button.setTextSize(15);
         button.setTextColor(getColor(R.color.ink));
-        button.setMinWidth(0);
-        button.setMinimumWidth(0);
+        button.setMinWidth(dp(64));
+        button.setMinimumWidth(dp(64));
         button.setPadding(dp(12), 0, dp(12), 0);
-        button.setLayoutParams(new LinearLayout.LayoutParams(dp(60), dp(52)));
+        button.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, dp(52)));
         return button;
     }
 

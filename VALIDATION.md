@@ -1,8 +1,15 @@
 # Validation
 
-2026-09-10. Android 15 / API 35, x86_64 emulator. No physical device was connected.
+## 1.0.1 UI correction
 
-`./gradlew testDebugUnitTest connectedDebugAndroidTest lintDebug assembleRelease`
+- Open and Save use content-sized, single-line buttons, with a 64 dp minimum width.
+- Header text increased from 14 to 15 sp; editor text increased from 16 to 17 sp.
+- Visually verified on API 35 at font scales 1.0 and 1.3, and at 2.0 with a narrow 320 dp screen. Both button labels remain on one line without clipping.
+- Updated APK installed successfully. Lint: zero errors, three dependency-version advisories.
+
+## Initial 1.0 verification
+
+2026-09-10. Android 15 / API 35, x86_64 emulator. No physical device was connected.
 
 - 16 JVM tests passed.
 - 12 Android instrumentation tests passed.
