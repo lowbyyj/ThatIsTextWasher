@@ -5,3 +5,10 @@ local.properties
 .tools/
 artifacts/
 *.iml
+*.jks
+*.keystore
+*.p12
+*.pfx
+*.password
+*.dpapi
+.signing/

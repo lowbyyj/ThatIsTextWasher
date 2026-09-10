@@ -1,5 +1,14 @@
 # Validation
 
+## 1.0.4 Public release signing
+
+- Signed with the dedicated Text Washer RSA-3072 release key. Its public certificate and proof of rotation are in `signing/`; private material is outside Git with a separate private local backup.
+- Verified that the backup keystore opens with its recovery password and matches the primary keystore. The packaging script requires the existing key and verifies the APK signer against the pinned public certificate.
+- APK signature scheme v3 uses the release key on all supported Android versions (API 29+). The original development certificate authorizes installed-data migration, without permission/shared-UID/authenticator trust or rollback capability.
+- Installed the original 1.0.3 development-signed APK, then updated to the public 1.0.4 APK on API 35. The app UID and 206 characters of unsaved Korean/English text were preserved. Fresh installation and launch also passed.
+- All eight IME regressions passed against the final release-signed APK, using a separately signed test APK that is not distributed. Release lint: zero errors, three dependency-version advisories.
+- This release changes signing and version metadata only; the app UI and editing behavior remain those of 1.0.3. Signing does not exempt the APK from Play Protect checks.
+
 ## 1.0.3 Editor typography
 
 - Replaced the editor's monospace typeface with the system sans-serif typeface so ordinary Korean and English word spaces use proportional font metrics. Text content and intentional repeated spaces are preserved.
@@ -60,6 +69,6 @@
 - Android does not label every keyboard insertion as a paste. Standard paste paths are washed. Keyboard clipboard-history chips that send ordinary `commitText` are treated as typing; use Ctrl+V or the editor's Paste action for guaranteed washing. Clipboard contents are never used to guess whether normal typing is a paste.
 - Android 12+ supplies its own system launch window. The app has no additional splash activity or startup screen.
 - Recovery is one internal state, written after 700 ms idle and immediately on pause. A process killed before either write can lose the last in-flight edit. External files are written only on explicit Save.
-- The supplied `artifacts/Text-Washer.apk` is optimized and signed with the local Android development key for installation/testing. The normal release Gradle output remains unsigned; no publishing key is included.
+- From 1.0.4, `artifacts/Text-Washer.apk` is optimized and signed with the dedicated release key. The normal release Gradle output remains unsigned; no private signing key is included in Git or the public release. Key-rotation installation was exercised on API 35; other supported OS versions were checked by signature verification only.
 
 CommonMark's license is bundled in the APK at `assets/THIRD_PARTY_NOTICES.txt`.

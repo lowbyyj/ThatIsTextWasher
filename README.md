@@ -2,6 +2,8 @@
 
 A **brutally simple Android scratchpad** that turns anything you paste into **plain text**.
 
+**[Download APK](https://github.com/lowbyyj/ThatIsTextWasher/releases/latest/download/Text-Washer.apk)**
+
 **Paste anything.**\
 **Get plain text.**
 
