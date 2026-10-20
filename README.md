@@ -30,7 +30,7 @@ That's it.
 - **Plain text only**
 - **`.txt` only**
 - **Instant recovery**
-- `Ctrl+A / S / C / V / X / Z`
+- `Ctrl+A / S / C / V / X / Z` · `Ctrl+Shift+Z` to redo
 - No formatting
 - No sync
 - No account

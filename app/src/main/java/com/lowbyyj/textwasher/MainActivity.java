@@ -319,7 +319,7 @@ public final class MainActivity extends Activity {
                 case KeyEvent.KEYCODE_C -> android.R.id.copy;
                 case KeyEvent.KEYCODE_V -> android.R.id.paste;
                 case KeyEvent.KEYCODE_X -> android.R.id.cut;
-                case KeyEvent.KEYCODE_Z -> android.R.id.undo;
+                case KeyEvent.KEYCODE_Z -> event.isShiftPressed() ? android.R.id.redo : android.R.id.undo;
                 default -> 0;
             };
             if (event.getKeyCode() == KeyEvent.KEYCODE_S || action != 0) {

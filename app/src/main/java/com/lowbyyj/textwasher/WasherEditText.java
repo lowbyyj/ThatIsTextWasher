@@ -1,17 +1,21 @@
 package com.lowbyyj.textwasher;
 
+import android.annotation.SuppressLint;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.os.Build;
 import android.view.DragEvent;
+import android.view.InputDevice;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.widget.EditText;
 import android.widget.Toast;
 
 final class WasherEditText extends EditText {
     private final PasteWasher washer = new PasteWasher();
     private boolean autoCopy = true;
+    private int mouseSelectionAnchor = -1;
 
     WasherEditText(Context context) {
         super(context);
@@ -42,6 +46,38 @@ final class WasherEditText extends EditText {
             return onTextContextMenuItem(android.R.id.paste);
         }
         return super.onKeyShortcut(keyCode, event);
+    }
+
+    // Native EditText retains click and accessibility handling; this only extends a selection.
+    @SuppressLint("ClickableViewAccessibility")
+    @Override public boolean onTouchEvent(MotionEvent event) {
+        int action = event.getActionMasked();
+        if (action == MotionEvent.ACTION_DOWN) {
+            mouseSelectionAnchor = -1;
+            boolean shift = (KeyEvent.normalizeMetaState(event.getMetaState()) & KeyEvent.META_SHIFT_ON) != 0;
+            if (isEnabled() && getLayout() != null && event.isFromSource(InputDevice.SOURCE_MOUSE)
+                    && event.isButtonPressed(MotionEvent.BUTTON_PRIMARY) && shift) {
+                int anchor = Math.max(0, getSelectionStart());
+                if (requestFocus()) {
+                    mouseSelectionAnchor = anchor;
+                    cancelLongPress();
+                }
+            }
+        }
+        if (mouseSelectionAnchor >= 0 && event.isFromSource(InputDevice.SOURCE_MOUSE)) {
+            // Preserve the anchor, including backward selections. Consume the release too,
+            // so the native single-click handler cannot collapse the range afterwards.
+            if (action == MotionEvent.ACTION_DOWN || action == MotionEvent.ACTION_MOVE
+                    || action == MotionEvent.ACTION_UP) {
+                setSelection(Math.min(mouseSelectionAnchor, length()),
+                        getOffsetForPosition(event.getX(), event.getY()));
+            }
+            if (action == MotionEvent.ACTION_UP || action == MotionEvent.ACTION_CANCEL) {
+                mouseSelectionAnchor = -1;
+            }
+            return true;
+        }
+        return super.onTouchEvent(event);
     }
 
     @Override public boolean onDragEvent(DragEvent event) {

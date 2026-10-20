@@ -1,5 +1,13 @@
 # Validation
 
+## 1.0.5 Editing shortcuts
+
+- `Ctrl+Shift+Z` now invokes Android's native redo history; `Ctrl+Z` retains undo. No additional UI or separate edit-history system was added.
+- 28 Android instrumentation tests and 16 JVM tests passed. Eight new editor-interaction regressions cover selection, replacement, multiple undo/redo steps, clipboard preservation, and committed Korean text. The existing IME regressions remain green.
+- The public 1.0.4 APK reproduced both input regressions. Updating it to the release-signed 1.0.5 APK preserved the app UID and working text. All 16 interaction/IME tests also passed directly against the optimized release APK.
+- Release lint: zero errors, three dependency-version advisories. Native EditText retains accessibility and ordinary touch handling.
+- Input events were exercised on API 35. A physical Bluetooth mouse and keyboard were not available for hardware validation.
+
 ## 1.0.4 Public release signing
 
 - Signed with the dedicated Text Washer RSA-3072 release key. Its public certificate and proof of rotation are in `signing/`; private material is outside Git with a separate private local backup.
